@@ -25,6 +25,7 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -335,10 +336,13 @@ func (c *conn) Close() error {
 func (c *conn) fatal(err error) error {
 	c.mu.Lock()
 	if c.err == nil {
-		c.err = err
-		// Close connection to force errors on subsequent calls and to unblock
-		// other reader or writer.
-		c.conn.Close()
+		ne, ok := err.(*net.OpError)
+		if !ok || (ok && !strings.Contains(ne.Error(), "i/o timeout")) {
+			c.err = err
+			// Close connection to force errors on subsequent calls and to unblock
+			// other reader or writer.
+			c.conn.Close()
+		}
 	}
 	c.mu.Unlock()
 	return err
