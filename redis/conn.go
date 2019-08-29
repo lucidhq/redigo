@@ -618,6 +618,11 @@ func (c *conn) Flush() error {
 	return nil
 }
 
+func (c *conn) Peek() bool {
+	_, err := c.br.Peek(1)
+	return err == nil
+}
+
 func (c *conn) Receive() (interface{}, error) {
 	return c.ReceiveWithTimeout(c.readTimeout)
 }
