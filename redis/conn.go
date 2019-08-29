@@ -619,7 +619,8 @@ func (c *conn) Flush() error {
 }
 
 func (c *conn) Peek() bool {
-	_, err := c.br.Peek(1)
+	b, err := c.br.Peek(1)
+	fmt.Printf("Peek returned b=%+v err=%+v\n",b,err)
 	return err == nil
 }
 
