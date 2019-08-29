@@ -96,7 +96,7 @@ func (c PubSubConn) Ping(data string) error {
 // Peek returns true if there is at least one byte in the receive buffer
 // implying that there is a message to be read
 func (c PubSubConn) Peek() bool {
-	return c.Peek()
+	return c.Conn.Peek()
 }
 
 // Receive returns a pushed message as a Subscription, Message, Pong or error.
